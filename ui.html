@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Node101 Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      #msg_container {
+        list-style-type: none;
+        padding-left: 0;
+      }
+      #msg_container li {        
+        padding: .5em .5em;        
+      }
+      #msg_container li:nth-child(odd) { 
+        background: cyan; 
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="h-75">
+            <h1>Room <span id="room_id"></span></h1>
+            <ul id="msg_container"></ul>
+          </div>
+          <nav class="navbar fixed-bottom navbar-light border-top bg-light">
+            <form method="POST" action="" class="postion-fixed w-100">
+              <div class="input-group">
+                <input
+                  type="text"
+                  autocomplete="off"
+                  class="form-control"
+                  placeholder="Type your message"
+                  name="msg"
+                />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="submit">
+                    Send
+                  </button>
+                </div>
+              </div>
+            </form>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
