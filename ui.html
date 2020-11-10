@@ -37,6 +37,7 @@
                   class="form-control"
                   placeholder="Type your message"
                   name="msg"
+                  autofocus
                 />
                 <div class="input-group-append">
                   <button class="btn btn-outline-secondary" type="submit">
@@ -49,5 +50,36 @@
         </div>
       </div>
     </div>
+    <script>
+      let path = window.location.pathname;
+      path += path[path.length -1] == "/" ? "" : "/";
+      document.getElementById("room_id").innerText = path.split("/")[2]
+      let msg_count = 0;
+      function getMsgs() {
+        const container = document.getElementById("msg_container");
+        fetch(path + "messages")
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else {
+              throw new Error(response.statusText);
+            }
+          })
+          .then((messages) => {
+            for (idx in messages) {
+              if (idx < msg_count) continue;
+              let li = document.createElement("li");
+              let node = document.createTextNode(
+                messages[idx]
+              );
+              li.appendChild(node);
+              container.appendChild(li);
+              msg_count++;
+            }
+          });
+      }
+      getMsgs()
+      setInterval(getMsgs, 10000);
+    </script>
   </body>
 </html>
