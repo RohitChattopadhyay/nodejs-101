@@ -1,9 +1,9 @@
 const express = require('express');
 const http = require('http');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 const app = express();
-const server = http.createServer(app)
+const server = http.createServer(app);
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -15,7 +15,7 @@ const msgs = {
 app.get('/', (req, res) => {
     const client_ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     let html_res = "<h1>Hello " + client_ip + '</h1><h3>Available Rooms</h3>'
-    for(let room in msgs)
+    for (let room in msgs)
         html_res += "<a href=/room/" + room + ">" + room + "</a><br>";
     res.send(html_res);
 });
@@ -42,6 +42,11 @@ app.get('/room/:room_id/messages', (req, res) => {
     const room_id = req.params.room_id
     res.json(msgs[room_id])
 });
+
+
+app.get('/broadcast', (req, res) => {
+    res.sendFile(__dirname + '/ws_ui.html');
+})
 
 server.listen(PORT, () => {
     console.log('Server started...');
