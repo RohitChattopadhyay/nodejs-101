@@ -1,9 +1,11 @@
 const express = require('express');
 const http = require('http');
 const bodyParser = require('body-parser');
+const socketio = require('socket.io')
 
 const app = express();
 const server = http.createServer(app);
+const ws = socketio(server)
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -43,10 +45,25 @@ app.get('/room/:room_id/messages', (req, res) => {
     res.json(msgs[room_id])
 });
 
+// Implementation using WebSocket
 
 app.get('/broadcast', (req, res) => {
     res.sendFile(__dirname + '/ws_ui.html');
 })
+
+ws.on('connection', (socket) => {
+    const address = socket.handshake.headers["x-forwarded-for"] || socket.handshake.address;
+    console.log(address, "Logged In");
+
+    socket.on('broadcast-message', (message) => {
+        console.log(address, message)
+        ws.emit('broadcast-message', "Sent using WebSocket by " + address + " > " + message);
+    });
+
+    socket.on('disconnect', () => {
+        console.log(address, "Logged Out");
+    });
+});
 
 server.listen(PORT, () => {
     console.log('Server started...');
