@@ -7,7 +7,9 @@ const server = http.createServer(app)
 const PORT = 3000;
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello world</h1>');
+    const client_ip = req.ip
+    console.log(client_ip)
+    res.send('<h1>Hello ' + client_ip + '</h1>');
 });
 
 server.listen(PORT, () => {
